@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>材料を編集</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>✏️ 材料を編集</h1>
+
+    <form method="POST">
+        <label>材料名:</label>
+        <input type="text" name="name" value="{{ item[1] }}" required><br>
+
+        <label>単位:</label>
+        <input type="text" name="unit" value="{{ item[2] }}" required><br>
+
+        <label>在庫数:</label>
+        <input type="number" name="initial_stock" value="{{ item[3] }}" required><br>
+
+        <button type="submit">更新する</button>
+    </form>
+
+    <p><a href="{{ url_for('index') }}">← 一覧に戻る</a></p>
+</body>
+</html>

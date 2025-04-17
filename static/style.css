@@ -1,0 +1,137 @@
+/* 全体共通の基本スタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    padding: 40px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+h1 img {
+    width: 40px;
+    margin-right: 10px;
+}
+
+/* テーブルスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* 編集リンク */
+a.edit-link {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+a.edit-link:hover {
+    text-decoration: underline;
+}
+
+/* 削除ボタン */
+.delete-button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+/* 追加リンク */
+.add-link {
+    display: inline-block;
+    margin-top: 24px;
+    font-size: 1.1em;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.add-link:hover {
+    text-decoration: underline;
+}
+
+.add-link::before {
+    content: "+ ";
+    font-weight: bold;
+}
+
+/* フォームスタイル（登録・編集ページ共通） */
+form {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    max-width: 600px;
+    margin: auto;
+}
+
+form label {
+    display: block;
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    background-color: #2ecc71;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+form button:hover {
+    background-color: #27ae60;
+}
+
+/* 戻るリンク */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
