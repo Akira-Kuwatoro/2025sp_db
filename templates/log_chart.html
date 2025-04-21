@@ -1,0 +1,126 @@
+<!-- templates/log_chart.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>在庫ロググラフ</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            display: flex;
+            align-items: center;
+            font-size: 2em;
+        }
+        select {
+            padding: 6px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        canvas {
+            max-width: 100%;
+        }
+        a {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌐 在庫ロググラフ</h1>
+    <a href="/">&larr; 一覧に戻る</a><br>
+    <label for="chartType">表示型:</label>
+    <select id="chartType">
+        <option value="bar">棒グラフ (変更量の積上)</option>
+        <option value="line">折れ線グラフ (材料ごとの在庫変動)</option>
+    </select>
+
+    <canvas id="logChart"></canvas>
+
+    <script>
+        const rawLogs = JSON.parse('{{ logs | tojson | safe }}');
+
+        function drawChart(type) {
+            const ctx = document.getElementById('logChart').getContext('2d');
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+
+            if (type === 'bar') {
+                const labels = rawLogs.map(log => log.timestamp);
+                const data = rawLogs.map(log => log.change_type === '登録' ? log.quantity : -log.quantity);
+                window.myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '変更量 (入出庫)',
+                            data: data,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                        }]
+                    }
+                });
+            } else {
+                // 材料ごとの在庫変動を折れ線で
+                const history = {};
+                rawLogs.forEach(log => {
+                    const name = log.name;
+                    if (!history[name]) history[name] = [];
+                    const last = history[name].length > 0 ? history[name][history[name].length - 1].y : 0;
+                    const diff = log.change_type === '登録' ? log.quantity : -log.quantity;
+                    history[name].push({ x: log.timestamp, y: last + diff });
+                });
+
+                const datasets = Object.entries(history).map(([name, data]) => ({
+                    label: name,
+                    data: data,
+                    fill: false,
+                    borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                    tension: 0.1
+                }));
+
+                window.myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: datasets
+                    },
+                    options: {
+                        parsing: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day'
+                                },
+                                title: {
+                                    display: true,
+                                    text: '日時'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: '在庫量'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        document.getElementById('chartType').addEventListener('change', function() {
+            drawChart(this.value);
+        });
+
+        drawChart('bar');
+    </script>
+</body>
+</html>

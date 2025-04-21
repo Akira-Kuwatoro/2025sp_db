@@ -1,62 +1,14 @@
-<!-- templates/logs.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>在庫履歴ログ</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f4f4f4;
-            font-weight: bold;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        h1 {
-            display: flex;
-            align-items: center;
-            font-size: 1.8em;
-        }
-
-        h1::before {
-            content: "📜";
-            margin-right: 10px;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #fafafa;
-            padding: 40px;
-        }
-    </style>
 </head>
 <body>
-    <h1>在庫履歴ログ</h1>
+    <h1>📜 在庫履歴ログ</h1>
     <a href="{{ url_for('index') }}">← 一覧に戻る</a>
+
     <table>
         <thead>
             <tr>
@@ -72,9 +24,17 @@
             <tr>
                 <td>{{ log[0] }}</td>
                 <td>{{ log[1] }}</td>
-                <td>{{ log[2] }}</td>
+                <td>
+                    {% if log[2] == 'add' %}
+                        登録
+                    {% elif log[2] == 'edit' %}
+                        編集
+                    {% elif log[2] == 'delete' %}
+                        削除
+                    {% endif %}
+                </td>
                 <td>{{ log[3] }}</td>
-                <td>{{ log[4] }}</td>
+                <td>{{ log[4] }}</td>  <!-- timestamp -->
             </tr>
             {% endfor %}
         </tbody>
